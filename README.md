@@ -24,7 +24,11 @@ __Some of this configs require passwords in other files to work (e.g. mysql.conf
 Dependencies
 ============
 
-* `discovery.pl`
-* `my.cnf` with password
+* `/var/lib/zabbix/discovery.pl`
+* `/var/lib/zabbix/.my.cnf` with password  ```
+[client]
+user=zabbix
+password=putTheRightPasswordHere
+```
 * `speedtest-cli` logging to syslog - [https://github.com/sivel/speedtest]
 * `tlsCertAgeCheck` from this repo
