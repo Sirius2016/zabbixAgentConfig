@@ -25,7 +25,8 @@ Dependencies
 ============
 
 * `/var/lib/zabbix/discovery.pl`
-* `/var/lib/zabbix/.my.cnf` with password  ```
+* `/var/lib/zabbix/.my.cnf` with password;
+```
 [client]
 user=zabbix
 password=putTheRightPasswordHere
