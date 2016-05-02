@@ -1,0 +1,29 @@
+#!/bin/bash
+
+#
+# Script to find out how long a TLS cert is valid for
+# usage: tlsCertAgeCheck [server] (port)
+# eg tlsCertAgeCheck www.google.com
+# I think I must have downloaded this from the internet, sorry!
+# Used for Zabbix monitoring so that I can alert when certage < N days old
+# has a TIMEOUT set to 25 secs, as normally should only take a few secs to run
+
+# Dependencies
+# /usr/bin/timeout
+# /usr/bin/openssl
+# sed, date, bash
+
+SERVER=$1
+PORT=${2:-443}
+TIMEOUT=25
+end_date="$(/usr/bin/timeout $TIMEOUT /usr/bin/openssl s_client -host $SERVER -port $PORT -showcerts < /dev/null 2>/dev/null | sed -n '/BEGIN CERTIFICATE/,/END CERT/p' | openssl x509 -enddate -noout 2>/dev/null | sed -e 's/^.*\=//')"
+
+if [ -n "$end_date" ]
+then
+end_date_seconds=$(date "+%s" --date "$end_date")
+now_seconds=$(date "+%s")
+CALC=$((($end_date_seconds-$now_seconds)/24/3600))
+echo $CALC
+else
+exit 124
+fi
